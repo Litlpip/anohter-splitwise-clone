@@ -1,0 +1,45 @@
+{
+  "project": {
+    "name": "SplitWise Clone",
+    "description": "Mobile-first PWA приложение для разделения расходов между друзьями",
+    "type": "web-app",
+    "framework": "React + TypeScript + Vite"
+  },
+  "preferences": {
+    "codeStyle": {
+      "language": "ru",
+      "commentStyle": "jsdoc",
+      "importStyle": "esm",
+      "quoteStyle": "single"
+    },
+    "testing": {
+      "enabled": false,
+      "framework": null
+    }
+  },
+  "architecture": {
+    "style": "FSD",
+    "description": "Feature-Sliced Design - модульная архитектура"
+  },
+  "stack": {
+    "frontend": {
+      "framework": "React 19",
+      "language": "TypeScript",
+      "buildTool": "Vite (rolldown)",
+      "styling": "Chakra UI + CSS Modules",
+      "routing": "React Router v7",
+      "stateManagement": "Tanstack Query",
+      "forms": "React Hook Form + Zod"
+    },
+    "pwa": {
+      "plugin": "vite-plugin-pwa",
+      "serviceWorker": "Workbox",
+      "cacheStrategy": "Network First for API, Cache First for static"
+    }
+  },
+  "development": {
+    "nodeVersion": "20.18.1",
+    "packageManager": "npm",
+    "devServer": "http://localhost:5173"
+  }
+}
