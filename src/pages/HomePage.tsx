@@ -19,7 +19,7 @@ export function HomePage() {
 
         <Card shadow="sm" padding="lg" radius="md" withBorder>
           <Title order={2} mb="xs">
-            Get Started he
+            Get Started
           </Title>
           <Text c="dimmed">
             This app automatically adapts to your system's light or dark theme preference.
