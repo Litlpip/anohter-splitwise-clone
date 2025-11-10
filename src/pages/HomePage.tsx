@@ -1,33 +1,31 @@
-import { Box, Card, Heading, Text, VStack, Flex } from '@chakra-ui/react'
+import { Box, Card, Title, Text, Stack, Flex } from '@mantine/core'
 import { ColorModeButton } from '@/components/ui/color-mode'
 
 export function HomePage() {
   return (
-    <Box minH="100vh" bg="bg" color="fg">
-      <VStack p={8} gap={6} align="stretch" maxW="4xl" mx="auto">
+    <Box style={{ minHeight: '100vh' }} p="md">
+      <Stack gap="xl" maw="4xl" mx="auto">
         <Flex justify="space-between" align="center">
           <Box>
-            <Heading size="2xl" mb={4}>
+            <Title order={1} mb="md">
               Welcome to Splitwise Clone
-            </Heading>
-            <Text fontSize="lg" color="fg.muted">
+            </Title>
+            <Text size="lg" c="dimmed">
               Split expenses with friends and family
             </Text>
           </Box>
           <ColorModeButton />
         </Flex>
 
-        <Card.Root>
-          <Card.Body>
-            <Heading size="lg" mb={2}>
-              Get Started
-            </Heading>
-            <Text color="fg.muted">
-              This app automatically adapts to your system's light or dark theme preference.
-            </Text>
-          </Card.Body>
-        </Card.Root>
-      </VStack>
+        <Card shadow="sm" padding="lg" radius="md" withBorder>
+          <Title order={2} mb="xs">
+            Get Started he
+          </Title>
+          <Text c="dimmed">
+            This app automatically adapts to your system's light or dark theme preference.
+          </Text>
+        </Card>
+      </Stack>
     </Box>
   )
 }

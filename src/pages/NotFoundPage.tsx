@@ -1,15 +1,15 @@
-import { Box, Heading, Text, Button } from '@chakra-ui/react'
+import { Box, Title, Text, Button } from '@mantine/core'
 import { useNavigate } from 'react-router-dom'
 
 export function NotFoundPage() {
   const navigate = useNavigate()
 
   return (
-    <Box p={8} textAlign="center">
-      <Heading size="3xl" mb={4}>
+    <Box p="xl" ta="center">
+      <Title order={1} size="4rem" mb="md">
         404
-      </Heading>
-      <Text fontSize="xl" color="gray.600" mb={6}>
+      </Title>
+      <Text size="xl" c="dimmed" mb="xl">
         Page not found
       </Text>
       <Button onClick={() => navigate('/')}>

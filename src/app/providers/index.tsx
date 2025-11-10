@@ -1,5 +1,5 @@
 import { type ReactNode } from 'react'
-import { ChakraProvider } from './ChakraProvider'
+import { MantineProvider } from './MantineProvider'
 
 interface Props {
   children: ReactNode
@@ -7,8 +7,8 @@ interface Props {
 
 export function Providers({ children }: Props) {
   return (
-    <ChakraProvider>
+    <MantineProvider>
       {children}
-    </ChakraProvider>
+    </MantineProvider>
   )
 }
