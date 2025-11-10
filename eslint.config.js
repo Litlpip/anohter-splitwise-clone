@@ -7,7 +7,7 @@ import stylistic from '@stylistic/eslint-plugin'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
-  globalIgnores(['dist', 'dev-dist']),
+  globalIgnores(['dist', 'dev-dist', 'src/api/generated']),
   {
     files: ['**/*.{ts,tsx}'],
     extends: [
