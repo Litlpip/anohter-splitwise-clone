@@ -1,5 +1,6 @@
 import { type ReactNode } from 'react'
 import { MantineProvider } from './MantineProvider'
+import { QueryProvider } from './QueryProvider'
 
 interface Props {
   children: ReactNode
@@ -7,8 +8,10 @@ interface Props {
 
 export function Providers({ children }: Props) {
   return (
-    <MantineProvider>
-      {children}
-    </MantineProvider>
+    <QueryProvider>
+      <MantineProvider>
+        {children}
+      </MantineProvider>
+    </QueryProvider>
   )
 }
