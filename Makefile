@@ -1,12 +1,6 @@
 # VibeSplit PWA Makefile
 .PHONY: help build dev test deploy-local deploy-staging deploy-prod clean health rollback logs
 
-# Переменные
-DOCKER_IMAGE = vibesplit-pwa
-CONTAINER_NAME = vibesplit-pwa
-DOCKER_COMPOSE = docker-compose
-PORT = 3000
-
 # Цвета для вывода
 GREEN = \033[0;32m
 YELLOW = \033[1;33m
