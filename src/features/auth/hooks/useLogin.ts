@@ -1,11 +1,13 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 import { authApi } from '@/shared/api/client'
 import { tokenStorage } from '@/shared/api/tokenStorage'
 import type { LoginFormData } from '../schemas/loginSchema'
 import type { GetUserEntry } from '@/api/generated'
+import { ROUTES } from '@shared'
+import { useNavigate } from 'react-router-dom'
 
 export function useLogin() {
-  const queryClient = useQueryClient()
+  const navigate  = useNavigate()
 
   return useMutation({
     mutationFn: async (data: LoginFormData) => {
@@ -25,8 +27,9 @@ export function useLogin() {
       return response.data
     },
     onSuccess: (data: GetUserEntry) => {
+      console.log('data', data)
       // Cache user data under 'currentUser' key
-      queryClient.setQueryData(['currentUser'], data)
+      navigate(ROUTES.HOME)
     },
   })
 }
