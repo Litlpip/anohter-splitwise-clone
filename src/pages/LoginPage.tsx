@@ -2,7 +2,7 @@ import { Box, Card, Title, TextInput, PasswordInput, Button, Stack, Text, Anchor
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { ROUTES } from '@/shared/config/constants'
+import { ROUTES } from '@/lib/constants'
 import { loginSchema, type LoginFormData } from '@/features/auth/schemas/loginSchema'
 import { useLogin } from '@/features/auth/hooks/useLogin'
 

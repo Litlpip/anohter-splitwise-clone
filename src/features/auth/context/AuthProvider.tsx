@@ -1,8 +1,8 @@
 import { type ReactNode } from 'react'
 import { useQueryClient, useQuery } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
-import { tokenStorage } from '@/shared/api/tokenStorage'
-import { ROUTES } from '@/shared/config/constants'
+import { tokenStorage } from '@/lib/storage'
+import { ROUTES } from '@/lib/constants'
 import type { GetUserEntry } from '@/api/generated'
 import { AuthContext } from './AuthContext'
 

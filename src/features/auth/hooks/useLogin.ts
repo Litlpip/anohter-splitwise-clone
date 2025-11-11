@@ -1,9 +1,9 @@
 import { useMutation } from '@tanstack/react-query'
-import { authApi } from '@/shared/api/client'
-import { tokenStorage } from '@/shared/api/tokenStorage'
+import { authApi } from '@/api'
+import { tokenStorage } from '@/lib/storage'
 import type { LoginFormData } from '../schemas/loginSchema'
 import type { GetUserEntry } from '@/api/generated'
-import { ROUTES } from '@shared'
+import { ROUTES } from '@/lib/constants'
 import { useNavigate } from 'react-router-dom'
 
 export function useLogin() {

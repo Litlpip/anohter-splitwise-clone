@@ -1,6 +1,6 @@
 import axios from 'axios'
-import { tokenStorage } from './tokenStorage'
-import { API_BASE_URL } from '@/shared/config/constants'
+import { tokenStorage } from '@/lib/storage'
+import { API_BASE_URL } from '@/lib/constants'
 
 export const apiAxios = axios.create({
   baseURL: API_BASE_URL,

@@ -1,6 +1,6 @@
 import { Configuration, AuthorizationApi } from '@/api/generated'
-import { API_BASE_URL } from '@/shared/config/constants'
-import { apiAxios } from './axiosConfig'
+import { API_BASE_URL } from '@/lib/constants'
+import { apiAxios } from './config'
 
 const configuration = new Configuration({
   basePath: API_BASE_URL,

@@ -1,0 +1,235 @@
+# Соглашения о структуре проекта
+
+## Общие принципы
+
+- **Простота превыше всего**: не создавать лишние папки и уровни вложенности без явной необходимости
+- **Hybrid архитектура**: features для сложной бизнес-логики, общие компоненты отдельно
+- **Централизованный API слой**: вся работа с API в одном месте
+- **Единственный path alias**: использовать только `@/` для импортов
+
+## Структура проекта
+
+```
+src/
+├── api/              # Централизованный API слой
+│   ├── generated/    # OpenAPI generated код (не трогать вручную)
+│   ├── hooks/        # React Query hooks для работы с API
+│   ├── config.ts     # Axios configuration с interceptors
+│   └── index.ts      # Центральная точка экспорта всех API
+│
+├── features/         # Сложная бизнес-логика с собственной экосистемой
+│   └── auth/         # Пример: аутентификация
+│       ├── context/  # React context для feature
+│       ├── hooks/    # Специфичные хуки feature
+│       └── schemas/  # Zod схемы валидации
+│
+├── components/       # ВСЕ UI компоненты
+│   ├── ui/           # Переиспользуемые UI элементы (Button, Card, Input)
+│   ├── layout/       # Layout компоненты (Header, Footer, Sidebar)
+│   ├── ProtectedRoute.tsx
+│   ├── PublicRoute.tsx
+│   └── ...           # Остальные компоненты
+│
+├── pages/            # Компоненты страниц/роутов
+│   ├── HomePage.tsx
+│   ├── LoginPage.tsx
+│   └── NotFoundPage.tsx
+│
+├── hooks/            # Общие переиспользуемые хуки
+│   └── useServiceWorker.ts
+│
+├── lib/              # Утилиты, helpers, константы
+│   ├── constants.ts  # Константы приложения (ROUTES, API_BASE_URL)
+│   ├── types.ts      # Глобальные типы TypeScript
+│   └── storage.ts    # Обёртки над localStorage/sessionStorage
+│
+├── app/              # Инициализация приложения
+│   ├── providers/    # React providers (Query, Mantine, ErrorBoundary)
+│   ├── App.tsx       # Главный компонент с роутингом
+│   └── index.ts      # Экспорт App
+│
+├── main.tsx          # Entry point
+└── index.css         # Глобальные стили
+```
+
+## Правила организации кода
+
+### 1. Когда создавать feature
+
+Создавайте папку в `features/` только если:
+- ✅ Нужен собственный React context/state
+- ✅ Есть специфичные хуки и схемы валидации
+- ✅ Логика сложная и хорошо изолирована
+- ✅ Имеет собственный жизненный цикл
+
+**Примеры:** `auth`, `expenses`, `groups`, `settlements`
+
+**НЕ создавайте feature** для простых форм, UI компонентов или утилит.
+
+### 2. Организация компонентов
+
+- **components/ui/** - только переиспользуемые UI примитивы:
+  - Button, Card, Input, Modal, Dropdown
+  - Без бизнес-логики
+  - Могут использоваться в любом месте приложения
+
+- **components/** (корень) - бизнес-компоненты:
+  - ExpenseForm, GroupCard, UserAvatar
+  - Route guards (ProtectedRoute, PublicRoute)
+  - Feature-specific компоненты если они не требуют отдельной feature папки
+
+- **components/layout/** - компоненты структуры:
+  - Header, Footer, Sidebar, MainLayout
+  - Навигация, меню
+
+**Правило:** один компонент = один файл. Никаких index.ts для реэкспорта.
+
+### 3. API слой
+
+Вся работа с API строго в папке `api/`:
+
+- **api/generated/** - автогенерированный код из OpenAPI (не трогать)
+- **api/hooks/** - React Query хуки для endpoints:
+  ```typescript
+  // api/hooks/useExpenses.ts
+  export function useExpenses() {
+    return useQuery({...})
+  }
+  ```
+- **api/config.ts** - axios instance с interceptors
+- **api/index.ts** - экспортирует все API clients:
+  ```typescript
+  export { authApi, expensesApi, groupsApi } from './generated'
+  export * from './hooks'
+  ```
+
+**Правило:** компоненты и features импортируют API только из `@/api` или `@/api/hooks/*`
+
+### 4. Импорты
+
+Используйте **только** `@/` alias:
+
+```typescript
+// ✅ Правильно
+import { Button } from '@/components/ui/Button'
+import { useAuth } from '@/features/auth/context/useAuth'
+import { ROUTES } from '@/lib/constants'
+import { authApi } from '@/api'
+
+// ❌ Неправильно
+import { Button } from '../../components/ui/Button'
+import { Button } from '@shared/components/Button'
+import { useAuth } from '@features/auth/context/useAuth'
+```
+
+**Избегайте** относительных импортов через `../..` кроме случаев импорта в пределах одной feature.
+
+### 5. Хуки
+
+- **hooks/** - общие переиспользуемые хуки:
+  - useLocalStorage, useDebounce, useMediaQuery
+  - НЕ зависят от конкретной feature
+
+- **api/hooks/** - хуки для работы с API (React Query)
+
+- **features/*/hooks/** - специфичные для feature хуки:
+  - useLogin, useLogout (в features/auth/)
+  - useExpenseForm (в features/expenses/)
+
+### 6. Типы
+
+- **lib/types.ts** - глобальные типы приложения:
+  - User, AppConfig, RouteParams
+  - Utility types: Nullable<T>, Optional<T>
+
+- **api/generated/** - типы из OpenAPI (автогенерация)
+
+- **features/*/types.ts** - типы специфичные для feature (если нужны)
+
+### 7. Константы
+
+Все в **lib/constants.ts**:
+
+```typescript
+export const ROUTES = {
+  HOME: '/',
+  LOGIN: '/login',
+  EXPENSES: '/expenses',
+} as const
+
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://...'
+
+export const DATE_FORMAT = 'DD.MM.YYYY'
+```
+
+### 8. Стили
+
+- **index.css** - глобальные стили, CSS переменные, reset
+- Компонентные стили - через Mantine props или CSS modules при необходимости
+- Избегайте inline styles кроме динамических значений
+
+## Примеры использования
+
+### Создание нового компонента
+
+```typescript
+// src/components/ExpenseCard.tsx
+import { Card, Text } from '@mantine/core'
+import type { Expense } from '@/api/generated'
+
+interface Props {
+  expense: Expense
+}
+
+export function ExpenseCard({ expense }: Props) {
+  return <Card>...</Card>
+}
+```
+
+### Создание API hook
+
+```typescript
+// src/api/hooks/useExpenses.ts
+import { useQuery } from '@tanstack/react-query'
+import { expensesApi } from '@/api'
+
+export function useExpenses(groupId: string) {
+  return useQuery({
+    queryKey: ['expenses', groupId],
+    queryFn: () => expensesApi.getExpenses(groupId),
+  })
+}
+```
+
+### Использование в компоненте
+
+```typescript
+// src/pages/ExpensesPage.tsx
+import { useExpenses } from '@/api/hooks/useExpenses'
+import { ExpenseCard } from '@/components/ExpenseCard'
+
+export function ExpensesPage() {
+  const { data: expenses } = useExpenses('group-id')
+
+  return <div>{expenses?.map(e => <ExpenseCard key={e.id} expense={e} />)}</div>
+}
+```
+
+## Tech Stack
+
+- **Frontend**: React 19 + TypeScript
+- **Build**: Vite 7 (с babel-react-compiler)
+- **UI**: Mantine v7
+- **Routing**: React Router v7
+- **State/Data**: TanStack Query v5
+- **Forms**: React Hook Form + Zod
+- **HTTP**: Axios + OpenAPI generated client
+- **PWA**: vite-plugin-pwa
+
+## Команды
+
+- `npm run dev` - запуск dev сервера
+- `npm run build` - production сборка
+- `npm run preview` - preview production build
+- `make generate-client` - генерация API client из OpenAPI spec
+- `npm run lint` - проверка кода
