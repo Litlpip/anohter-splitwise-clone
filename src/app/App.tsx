@@ -4,6 +4,8 @@ import { AppErrorBoundary } from './providers/AppErrorBoundary'
 import { AuthProvider } from '@/features/auth/context/AuthProvider'
 import { ProtectedRoute } from '@/components/ProtectedRoute'
 import { PublicRoute } from '@/components/PublicRoute'
+import { PublicLayout } from '@/components/layouts/PublicLayout'
+import { AuthenticatedLayout } from '@/components/layouts/AuthenticatedLayout'
 import { HomePage } from '@/pages/HomePage'
 import { LoginPage } from '@/pages/LoginPage'
 import { NotFoundPage } from '@/pages/NotFoundPage'
@@ -20,7 +22,9 @@ export function App() {
                 path={ROUTES.HOME}
                 element={
                   <ProtectedRoute>
-                    <HomePage />
+                    <AuthenticatedLayout>
+                      <HomePage />
+                    </AuthenticatedLayout>
                   </ProtectedRoute>
                 }
               />
@@ -28,7 +32,9 @@ export function App() {
                 path={ROUTES.LOGIN}
                 element={
                   <PublicRoute>
-                    <LoginPage />
+                    <PublicLayout>
+                      <LoginPage />
+                    </PublicLayout>
                   </PublicRoute>
                 }
               />

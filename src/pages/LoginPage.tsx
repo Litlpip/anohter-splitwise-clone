@@ -1,5 +1,5 @@
 import { Box, Card, Title, TextInput, PasswordInput, Button, Stack, Text, Anchor, Alert } from '@mantine/core'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ROUTES } from '@/lib/constants'
@@ -7,7 +7,6 @@ import { loginSchema, type LoginFormData } from '@/features/auth/schemas/loginSc
 import { useLogin } from '@/features/auth/hooks/useLogin'
 
 export function LoginPage() {
-  const navigate = useNavigate()
   const { mutate: login, isPending, error } = useLogin()
 
   const {
@@ -19,17 +18,13 @@ export function LoginPage() {
   })
 
   const onSubmit = (data: LoginFormData) => {
-    login(data, {
-      onSuccess: () => {
-        navigate(ROUTES.HOME)
-      },
-    })
+    login(data)
   }
 
   return (
     <Box
       style={{
-        minHeight: '100vh',
+        flex: 1,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -42,7 +37,6 @@ export function LoginPage() {
         radius="md"
         withBorder
         w="100%"
-        maw={420}
       >
         <form onSubmit={handleSubmit(onSubmit)}>
           <Stack gap="lg">
